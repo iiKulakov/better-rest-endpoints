@@ -29,9 +29,9 @@ function get_page_by_id( WP_REST_Request $request ){
       $permalink = get_permalink();
       $bre_page->id = get_the_ID();
       $bre_page->title = get_the_title();
-      $bre_page->date = get_the_date('c');
       $bre_page->slug = $post->post_name;
       $bre_page->permalink = $permalink;
+      $bre_page->date = get_the_date('c');
 
       /*
        *
@@ -49,7 +49,6 @@ function get_page_by_id( WP_REST_Request $request ){
       }
 
       $bre_page->content = apply_filters('the_content', get_the_content());
-      $bre_post->blocks = parse_blocks($post->post_content);
 
       /*
        *
@@ -68,7 +67,7 @@ function get_page_by_id( WP_REST_Request $request ){
        * return acf fields if they exist
        *
        */
-      $bre_page->acf = bre_get_acf( $bre_page->id );
+      $bre_page->acf = bre_get_acf();
 
       /*
        *

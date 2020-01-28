@@ -64,9 +64,9 @@ function bre_get_pages( WP_REST_Request $request ) {
       $permalink = get_permalink();
       $bre_page->id = get_the_ID();
       $bre_page->title = get_the_title();
-      $bre_page->date = get_the_date('c');
       $bre_page->slug = $post->post_name;
       $bre_page->permalink = $permalink;
+      $bre_page->date = get_the_date('c');
 
       /*
        *
@@ -107,7 +107,7 @@ function bre_get_pages( WP_REST_Request $request ) {
        *
        */
        if( $acf === null || $show_acf === true ) {
-         $bre_page->acf = bre_get_acf( $bre_page->id );
+         $bre_page->acf = bre_get_acf();
        }
 
       /*

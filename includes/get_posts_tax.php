@@ -93,7 +93,6 @@ function bre_build_custom_tax_endpoint() {
 
                   if( $content === null || $show_content === true ){
                     $bre_tax_post->content = apply_filters('the_content', get_the_content());
-                    $bre_post->blocks = parse_blocks($post->post_content);
                   }
 
                   $bre_tax_post->author = esc_html__(get_the_author(), 'text_domain');
@@ -120,7 +119,7 @@ function bre_build_custom_tax_endpoint() {
                    *
                    */
                    if( $acf === null || $show_acf === true ) {
-                     $bre_tax_post->acf = bre_get_acf( $bre_tax_post->id );
+                     $bre_tax_post->acf = bre_get_acf();
                    }
 
                   /*

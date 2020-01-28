@@ -23,8 +23,6 @@ function bre_get_search( WP_REST_Request $request ) {
   $media = $request['media'];
   $show_media = filter_var($media, FILTER_VALIDATE_BOOLEAN);
   $search = $request['search']?: null;
-  $exclude_categories = $request['exclude_categories'] ? explode(",", rawurldecode($request['exclude_categories'])) : null;
-  $exclude_tags = $request['exclude_tags'] ? explode(",", rawurldecode($request['exclude_tags'])) : null;
 
   // WP_Query arguments
   $args = array(
@@ -33,8 +31,6 @@ function bre_get_search( WP_REST_Request $request ) {
     'paged'                  => $page,
     'cat'                    => $category,
     'tag_id'                 => $tag,
-    'category__not_in'       => $exclude_categories,
-    'tag__not_in'            => $exclude_tags,
     's'                      => $search
   );
 
@@ -71,7 +67,6 @@ function bre_get_search( WP_REST_Request $request ) {
       // show post content unless parameter is false
       if( $content === null || $show_content === true ) {
         $bre_post->content = apply_filters('the_content', get_the_content());
-        $bre_post->blocks = parse_blocks($post->post_content);
       }
 
       $bre_post->author = esc_html__(get_the_author(), 'text_domain');
@@ -125,7 +120,7 @@ function bre_get_search( WP_REST_Request $request ) {
        *
        */
       if( $acf === null || $show_acf === true ) {
-        $bre_post->acf = bre_get_acf( $bre_post->id );
+        $bre_post->acf = bre_get_acf();
       }
 
       /*

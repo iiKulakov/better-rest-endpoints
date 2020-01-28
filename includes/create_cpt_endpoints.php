@@ -83,9 +83,6 @@ function bre_build_cpt_endpoints() {
                 // show post content unless parameter is false
                 if( $content === null || $show_content === true ) {
                   $bre_post->content = apply_filters('the_content', get_the_content());
-                  
-                  // get guten blocks and parse into array format
-                  $bre_post->blocks = parse_blocks($post->post_content);
                 }
 
                 $bre_post->author = esc_html__(get_the_author(), 'text_domain');
@@ -97,16 +94,13 @@ function bre_build_cpt_endpoints() {
                  * get the terms
                  *
                  */
-                $bre_post->terms = array();
                 if( get_object_taxonomies($cpt) ){
                   $cpt_taxonomies = get_object_taxonomies($cpt, 'names');
 
-                  foreach ( $cpt_taxonomies as $cpt_taxonomy ) {
-                    $these_terms = get_the_terms(get_the_ID(), $cpt_taxonomy);
-                    if (false !== $these_terms) {
-                      $bre_post->terms = array_merge($bre_post->terms, $these_terms);
-                    }
-                  }
+                  $bre_post->terms = get_the_terms(get_the_ID(), $cpt_taxonomies);
+
+                } else {
+                  $bre_post->terms = array();
                 }
 
                 /*
@@ -115,7 +109,7 @@ function bre_build_cpt_endpoints() {
                  *
                  */
                 if( $acf === null || $show_acf === true ) {
-                  $bre_post->acf = bre_get_acf($bre_post->id);
+                  $bre_post->acf = bre_get_acf();
                 }
 
                 /*

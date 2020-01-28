@@ -56,7 +56,6 @@ function bre_build_single_cpt_endpoints_slug() {
                 $bre_cpt_post->date_modified = get_the_modified_date('c');
                 $bre_cpt_post->excerpt = get_the_excerpt();
                 $bre_cpt_post->content = apply_filters('the_content', get_the_content());
-                $bre_cpt_post->blocks = parse_blocks($post->post_content);
                 $bre_cpt_post->author = esc_html__(get_the_author(), 'text_domain');
                 $bre_cpt_post->author_id = get_the_author_meta('ID');
                 $bre_cpt_post->author_nicename = get_the_author_meta('user_nicename');
@@ -66,23 +65,22 @@ function bre_build_single_cpt_endpoints_slug() {
                  * get the terms
                  *
                  */
-                $bre_cpt_post->terms = array();
                 if( get_object_taxonomies($cpt) ){
                   $cpt_taxonomies = get_object_taxonomies($cpt, 'names');
-                  foreach ($cpt_taxonomies as $cpt_taxonomy) {
-                    $these_terms = get_the_terms(get_the_ID(), $cpt_taxonomy);
-                    if (false !== $these_terms) {
-                      $bre_cpt_post->terms = array_merge($bre_cpt_post->terms, $these_terms);
-                    }
-                  }
+
+                  $bre_cpt_post->terms = get_the_terms(get_the_ID(), $cpt_taxonomies);
+
+                } else {
+                  $bre_cpt_post->terms = array();
                 }
+
 
                 /*
                  *
                  * return acf fields if they exist
                  *
                  */
-                $bre_cpt_post->acf = bre_get_acf( $bre_cpt_post->id );
+                $bre_cpt_post->acf = bre_get_acf();
 
                 /*
                  *
